@@ -1,0 +1,62 @@
+package exception_handling;
+
+public class Main {
+
+    // 'throws' declares that this method may throw these exceptions
+    // the caller (main) is responsible for handling them
+   public static void withdraw(double balance, double amount)
+           throws IllegalArgumentException, ArithmeticException {
+       if(amount<=0){
+           
+           // manually throwing exception for invalid input
+           throw new IllegalArgumentException("Amount must be positive");
+   }else if(amount>balance) { 
+       
+           // manually throwing exception for insufficient funds
+           throw new ArithmeticException("Insufficient funds");
+   }else{
+       
+           // no exception — valid withdrawal
+           System.out.println("Withdraw: " +amount+ " | Remaining: " +(balance-amount));
+   }      
+  }
+           
+    public static void main(String[] args) {
+
+        // --- Case 1: Valid withdrawal ---
+        try{
+            withdraw(1000, 400); // 400 < 1000, should succeed
+            
+        }catch(IllegalArgumentException | ArithmeticException e){
+            // multi-catch: handles both exceptions the same way
+
+            System.out.println("Exception: " +e.getMessage());
+        }finally{
+            // always runs, exception or not
+            System.out.println("Transition attempt complete.");
+        }
+        
+        System.out.println(); // blank line for readability
+        
+         // --- Case 2: Insufficient funds ---
+        try{
+            withdraw(1000, 2000); // 2000 > 1000, should throw ArithmeticException
+        }catch(IllegalArgumentException | ArithmeticException e){
+            System.out.println("Exception: " +e.getMessage());
+        }finally{
+            System.out.println("Transition attempt complete.");
+        }
+        
+        System.out.println();
+        
+        // --- Case 3: Invalid amount (negative) ---
+        try{
+            withdraw(1000, -50); // negative amount, should throw IllegalArgumentException
+        }catch(IllegalArgumentException | ArithmeticException e){
+            System.out.println("Exception: " +e.getMessage());
+        }finally{
+            System.out.println("Transition attempt complete.");
+        }
+               
+    }
+}
